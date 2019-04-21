@@ -1,3 +1,4 @@
+// Initialize Firebase
 var config = {
     apiKey: "AIzaSyCgVDfF0u_-Pj6SQWygZh_9xvx42_QgteY",
     authDomain: "fir-homework-6dcb8.firebaseapp.com",
@@ -9,54 +10,56 @@ var config = {
   firebase.initializeApp(config);
   var database = firebase.database();
 
-  $("#submit").on("click", function(event){
-      event.preventDefault();
-      
-      var name = $("#trainName").val().trim();
-      var destination = $("#destination").val().trim();
-      var fTrain = moment($("#time").val().trim());
-      var frequency = $("#min").val().trim();
-      var fTrainMin = moment().diff(moment(fTrain, "X"),"minutes");
-      var minAway = frequency - fTrainMin;
-      if (minAway < 1) {
-          moment().add(1400, "minutes").fTrainMin;
-          minAway = frequency - fTrainMin;
-      };
-      if(minAway > frequency) {
-          minAway = fTrainMin * -1;
-      };
+ var name = "";
+ var destination = "";
+ var ftime = "";
+ var frequency = "";
 
-      var newTrain = {
-          name: name,
-          destination: destination,
-          fTrain: fTrain,
-          frequency: frequency,
-          fTrainMin: fTrainMin,
-          minAway: minAway  
-      };
-      database.ref().push(newTrain);
-  });
+     $(".btn").on("click", function(event) {
+     event.preventDefault();
+     name = $("#trainName").val();
+     destination = $("#destination").val();
+     ftime = moment($("#ftime").val().trim(), "HH:mm").subtract(10, "minutes").format("X");
+     frequency = $("#frequency").val();
 
-  database.ref().on("chiild_added", function(childSnapshot) {
-      var name = childSnapshot.val().name;
-      var destination = childSnapshot.val().destination;
-      var minAway = childSnapshot.val().minAway;
-      var nextTrain = moment().add(minAway, "minutes").format("LLL");
+     database.ref().push({
+     name: name,
+     destination: destination,
+     frequency: frequency,
+     ftime: ftime
+     });
+ });
+    database.ref().on("child_added", function(childSnapshot) {
+        var name = childSnapshot.val().name;
+        var destination = childSnapshot.val().destination;
+        var frequency = childSnapshot.val().frequency;
+        var ftime = childSnapshot.val().ftime;
 
-      function createTrain() {
-          return `
-          <tr>
-          <th scope="row">${name}</th>
-          <td>${destination}</td>
-          <td>${nextTrain}</td>
-          <td>${minAway}</td>
-          </tr>
-          `
-      };
-      $("tbody").append(createTrain());
+        var timeRemainder = moment().diff(moment.unix(ftime), "minutes") % frequency;
+        var minutesAway = frequency - timeRemainder;
+        var nextTrainArrival = moment().add(minutesAway, "m").format("hh:mm");
 
-      $("#trainName").val(" ");
-      $("#destination").val(" ");
-      $("#time").val(" ");
-      $("#min").val(" ");
-  });
+        var newTr = {
+            name: name,
+            destination: destination,
+            frequency: frequency,
+            nextTrainArrival: nextTrainArrival,
+            minutesAway: minutesAway
+        };
+        $("table").append(makeRow(newTr));
+    });
+
+    function makeRow(data) {
+        return `
+        <tbody>
+        <tr>
+        <td>${data.name}</td>
+        <td>${data.destination}</td>
+        <td>${data.nextTrain}</td>
+        <td>${data.frequency}</td>
+        <td>${data.nextTrainArrival}</td>
+        <td>${data.minutesAway}</td>
+        </tr>
+        </tbody>
+        `;
+    }

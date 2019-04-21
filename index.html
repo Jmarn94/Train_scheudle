@@ -19,16 +19,13 @@
               </div>
 
                 <table class="table table-light">
-                  <thread>
                     <tr>
-                      <th scope="col">Train Name</th>
-                      <th scope="col">Destination</th>
-                      <th scope="col">Frequency</th>
-                      <th scope="col">Next Arrival</th>
-                      <th scope="col">Minutes Away</th>
-                
+                      <th>Train Name</th>
+                      <th>Destination</th>
+                      <th>Frequency</th>
+                      <th>Next Arrival</th>
+                      <th>Minutes Away</th>
                     </tr>
-                  </thread>
                 </table>
              
 
@@ -44,18 +41,18 @@
                     </div>
                     <div class="form-group">
                             <label for="inputTime">First Train Time(HH:mm-military time)</label>
-                            <input type="train time" class="form-control" id="time">
+                            <input type="train time" class="form-control" id="ftime">
                           </div>
                           <div class="form-group">
                                 <label for="inputFrequency">Frequency(min)</label>
-                                <input type="frequency" class="form-control" id="min">
+                                <input type="frequency" class="form-control" id="frequency">
                               </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </form>
                 </div>
 
-
+<script src ="assets/app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
